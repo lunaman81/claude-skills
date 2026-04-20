@@ -80,18 +80,9 @@ If any "safe" item carries medium-or-higher doing-it risk, reclassify it to "nee
     - **Needs your call:** <numbers>. Say "walk me through" and I'll take you through each.
     - Say "expand N" for why a finding matters, what I'd do, and how I'd verify.
 
-## 6. Safety envelope — run this every time the founder says "fix safe" / "fix N"
+## 6. Safety envelope (before applying any fix)
 
-Never apply a fix without this procedure:
-
-1. **Snapshot.** Run `git status`. If there are uncommitted changes, `git stash push -m 'audit pre-fix snapshot'` and remember the stash. If clean, remember the current commit hash.
-2. **Verify the project works right now.** Pick one concrete, observable thing that proves the current state is healthy (e.g. "run.log shows yesterday's push exited clean"; "CLAUDE.md parses and has 101 lines"). State it explicitly, with evidence.
-3. **Apply the fix.**
-4. **Re-verify.** Check that the same concrete thing still works. Cite evidence.
-5. **If re-verify fails:** roll back immediately — `git reset --hard <snapshot>` and `git stash pop` if stashed. Tell the founder plainly what broke and confirm nothing was left changed.
-6. **Summary.** Show before/after of each change plus the re-verify result.
-
-If the fix is outside a git repo, skip steps 1 and 5 but still run 2-4-6. Tell the founder there's no automatic rollback for this file and confirm before proceeding.
+When the founder says "fix safe" / "fix N" / "walk me through," read `references/safety-envelope.md` and follow the procedure there exactly. It's a six-step snapshot → verify → apply → re-verify → auto-rollback loop. Never skip steps 2 (verify before) or 4 (re-verify after) — those are the steps that catch silent breakage.
 
 ## 7. Rules for this skill
 
