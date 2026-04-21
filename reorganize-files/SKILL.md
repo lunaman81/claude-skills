@@ -1,5 +1,5 @@
 ---
-name: reorganizefiles
+name: reorganize-files
 description: Use when the founder asks to reorganize folder structure, move files, clean up the project root, or says "restructure", "reorganize", "propose a folder structure", "move these files", "the root is cluttered". Produces a before/after folder tree, a blast-radius report (every command, doc, and code path that would break), and a move plan calibrated to the project's actual scale. Executes only after approval, with a snapshot → move → update references → verify → auto-rollback safety envelope.
 allowed-tools:
   - Bash
@@ -10,7 +10,7 @@ allowed-tools:
   - Grep
 ---
 
-# /reorganizefiles — Folder structure review and safe moves
+# /reorganize-files — Folder structure review and safe moves
 
 Propose a better layout, then execute moves without breaking commands, docs, or automation. Never move anything in the initial pass.
 
