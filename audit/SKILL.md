@@ -18,71 +18,46 @@ allowed-tools:
 
 ## 1. Pick what to audit
 - If the founder names a file or folder, check that.
-- Otherwise check the current project: top-level files, `CLAUDE.md` (global and project), `.claude/`, `docs/`, `tasks/`, any `SKILL.md`.
+- Otherwise check the current project: top-level files, `CLAUDE.md` (global and project), `.claude/` (including `settings.json`), `docs/`, `tasks/`, any `SKILL.md`.
 - If the path doesn't exist, say so in plain English and stop.
 
 ## 2. Look around (don't change anything)
-- Read every `CLAUDE.md`, `SKILL.md`, and markdown doc in scope. Count lines.
-- For every file path referenced inside them, check whether it exists.
-- Walk folders once to spot nested duplicates, empty files, identical copies.
-- When a reference cites a line number or line content, *verify* the real line — don't just flag the hardcoding.
+The skill works on any file type. Match each file to its inspection guide, and reason in failure-types — not a fixed checklist.
+
+- **Pick the guide per file:**
+  - prose & markdown (`CLAUDE.md`, `SKILL.md`, docs) → `references/inspect-docs.md`
+  - JSON config — settings, permissions, hooks, MCP (`settings.json`) → `references/inspect-config.md`
+  - any other type → reason from the six failure-types in section 3.
+- **Two habits for every file:**
+  - **Parse, don't eyeball.** Open structured files as data; never judge a config by skimming it.
+  - **Verify against the live system.** A reference is only real if the target exists; a tool grant only counts if the tool is connected; a cited line is only right once you've read it.
+- **Judge against purpose, not just freshness.** Ask what the file is *for*, and whether anything in it defeats that job — a rule that cancels a safety rule, a gate that doesn't gate.
 
 ## 3. Classify each finding against the impact table
 
-Read `references/impact-table.md`. For every finding, match a row in the **Finding** column and copy the **Impact** wording verbatim — never rephrase or invent. Each row carries a severity bucket (🔴 Broken, 🟡 Out of date, 🟢 Too big) — use that to place the finding in the right report section. If no row matches: label impact **"Likely, not verified"** and describe in plain English. Never dramatize. Append the new pattern to the impact table so next audit has a canonical row.
+Read `references/impact-table.md`. Every row is an instance of one of six **failure-types** — **dead** (points at something gone), **duplicate** (already covered elsewhere), **self-defeating** (one rule cancels another), **false-claim** (says something checkable that's wrong), **risky** (e.g. a secret in the open), **oversized**. Match each finding to a row and copy the **Impact** wording verbatim — never rephrase. Use the row's severity bucket (🔴 Broken, 🟡 Out of date, 🟢 Too big) to place it. If a finding fits a type but no row matches: label it **"Likely, not verified,"** describe it plainly, and **append a new row** so the next audit catches it automatically. Never dramatize.
 
 ## 4. Sort + rate every finding
 
 Split findings into two lists:
 
-- **Safe to fix automatically** — examples: delete an empty file, move an orphan doc to archive, swap a hardcoded line number for a search marker, trim a clearly-unused section to get under a line limit, fix a command path when the real location is unambiguous.
-- **Needs the founder's decision** — examples: which of two duplicates to keep, symlink vs. script for deduped files, whether to close an open session-log item, *anything where picking the wrong option could break a working system.*
+- **Safe to fix automatically** — e.g. delete an empty file, move an orphan doc to archive, swap a hardcoded line number for a search marker, remove a permission already covered by a broader rule, trim a clearly-unused section under a line limit.
+- **Needs the founder's decision** — which of two duplicates to keep, whether a disconnected tool is truly unused, anything touching the money path, *anything where picking wrong could break a working system.*
 
-For every item on the "safe" list, rate three things honestly:
-1. **Risk of doing it** — near-zero / low / medium / high. Name the specific thing that could break ("nothing automated reads this, it's docs-only" is a valid answer).
+For every "safe" item, rate three things honestly:
+1. **Risk of doing it** — near-zero / low / medium / high. Name the specific thing that could break.
 2. **Risk of leaving it** — the specific future pain, in plain English.
-3. **Confidence it's a real problem** — high / medium / low. Cite evidence (e.g. "I checked: line 85 is real; line 79 in docs is wrong").
+3. **Confidence it's a real problem** — high / medium / low. Cite evidence.
 
 If any "safe" item carries medium-or-higher doing-it risk, reclassify it to "needs the founder's decision." Don't hide risk to look useful.
 
-## 5. Output — exactly this shape
+## 5. Output
 
-    # Audit: <what was checked>
-    Verdict: <PASS | FAIL> — <N broken, N stale, N bloated>
-
-    ## Top 3 fixes (do these first)
-    **1. <plain-English headline>**
-    <1-2 sentences: what's wrong + impact from the table>
-    - What I'll change: <specific before/after>
-    - How I'll check it worked: <plain-English verify>
-
-    (2 and 3 follow the same shape)
-
-    ## All findings
-
-    **🔴 Broken (will cause problems)**
-    1. <one line, plain English, file and line named in words>
-
-    **🟡 Out of date (will mislead future sessions)**
-    ...
-
-    **🟢 Too big (may get partly ignored by Claude)**
-    ...
-
-    ## Risk check — what each "safe" fix would actually cost or cause
-
-    | # | Fix | Risk of doing it | Risk of leaving it | Confidence it's real |
-    |---|---|---|---|---|
-    | 1 | <short name> | <rating + why> | <plain-English future pain> | <rating + evidence> |
-
-    ## Fix it for you?
-    - **Safe — low-risk, I can apply these:** <numbers>. Say "fix safe" for all, "fix N" for one. Every fix runs through the safety envelope (snapshot → verify → apply → re-verify → auto-rollback).
-    - **Needs your call:** <numbers>. Say "walk me through" and I'll take you through each.
-    - Say "expand N" for why a finding matters, what I'd do, and how I'd verify.
+Produce the report in the exact shape in `references/report-format.md`: a verdict line, the top-3 fixes, all findings in the three buckets, the risk-check table, and the "fix it for you?" offer.
 
 ## 6. Safety envelope (before applying any fix)
 
-When the founder says "fix safe" / "fix N" / "walk me through," read `references/safety-envelope.md` and follow the procedure there exactly. It's a six-step snapshot → verify → apply → re-verify → auto-rollback loop. Never skip steps 2 (verify before) or 4 (re-verify after) — those are the steps that catch silent breakage.
+When the founder says "fix safe" / "fix N" / "walk me through," read `references/safety-envelope.md` and follow it exactly — a six-step snapshot → verify → apply → re-verify → auto-rollback loop. For JSON config edits, also use the config-safe verification in `references/inspect-config.md` (back up, assert exact counts, re-validate the file parses). Never skip the verify-before or re-verify-after steps — those catch silent breakage.
 
 ## 7. Rules for this skill
 
@@ -90,6 +65,6 @@ When the founder says "fix safe" / "fix N" / "walk me through," read `references
 - Impact wording must match a row in `references/impact-table.md`, verbatim. No evidence → "Likely, not verified."
 - Every finding cites evidence — the file, the line, the fact.
 - Verdict is `FAIL` if anything lands in 🔴 Broken. Otherwise `PASS`.
-- Don't change anything in the initial report pass — fixes only happen after the founder says "fix safe" / "fix N" / "walk me through," and only via the safety envelope.
+- Don't change anything in the initial report pass — fixes happen only after "fix safe" / "fix N" / "walk me through," and only via the safety envelope.
 - If a bucket is empty, write "0 problems." Never invent findings.
 - Err toward honest risk ratings. If you can't confidently say a fix is near-zero risk, it doesn't belong on the safe list.
