@@ -44,6 +44,8 @@ Split findings into two lists:
 - **Safe to fix automatically** — e.g. delete an empty file, move an orphan doc to archive, swap a hardcoded line number for a search marker, remove a permission already covered by a broader rule, trim a clearly-unused section under a line limit.
 - **Needs the founder's decision** — which of two duplicates to keep, whether a disconnected tool is truly unused, anything touching the money path, *anything where picking wrong could break a working system.*
 
+**Also run a simplification pass.** Beyond defects, actively hunt for ways the setup could be simpler or more elegant with no loss of function — consolidate narrow rules into one broader rule (never broadening a gated or dangerous command), merge duplicated structure, move bulk into references, flatten needless nesting. List these as **recommended simplifications**, each with a clear recommendation. Don't stay silent because nothing is "broken," and don't bury a good simplification behind excessive caution — if it's reversible and you can verify it, propose it and recommend it boldly.
+
 For every "safe" item, rate three things honestly:
 1. **Risk of doing it** — near-zero / low / medium / high. Name the specific thing that could break.
 2. **Risk of leaving it** — the specific future pain, in plain English.
@@ -55,9 +57,11 @@ If any "safe" item carries medium-or-higher doing-it risk, reclassify it to "nee
 
 Produce the report in the exact shape in `references/report-format.md`: a verdict line, the top-3 fixes, all findings in the three buckets, the risk-check table, and the "fix it for you?" offer.
 
-## 6. Safety envelope (before applying any fix)
+## 6. Apply fixes — safety envelope
 
-When the founder says "fix safe" / "fix N" / "walk me through," read `references/safety-envelope.md` and follow it exactly — a six-step snapshot → verify → apply → re-verify → auto-rollback loop. For JSON config edits, also use the config-safe verification in `references/inspect-config.md` (back up, assert exact counts, re-validate the file parses). Never skip the verify-before or re-verify-after steps — those catch silent breakage.
+**Triggers.** **"execute"** or **"build"** applies the *full recommended set* — every safe fix and every recommended simplification — pausing only on items marked "needs your decision." **"fix safe"** applies just the safe fixes; **"fix N"** one item; **"walk me through"** the judgment calls.
+
+For each change, read `references/safety-envelope.md` and follow it exactly — snapshot → verify → apply → re-verify → auto-rollback — re-verifying *between* changes, never batching blind. For JSON config edits, also use the config-safe verification in `references/inspect-config.md` (back up, assert exact counts, re-validate the file parses). Never skip the verify-before or re-verify-after steps — those catch silent breakage.
 
 ## 7. Rules for this skill
 
@@ -68,3 +72,4 @@ When the founder says "fix safe" / "fix N" / "walk me through," read `references
 - Don't change anything in the initial report pass — fixes happen only after "fix safe" / "fix N" / "walk me through," and only via the safety envelope.
 - If a bucket is empty, write "0 problems." Never invent findings.
 - Err toward honest risk ratings. If you can't confidently say a fix is near-zero risk, it doesn't belong on the safe list.
+- Default to proposing simplifications boldly — the safety envelope, not silence, is what keeps bold changes safe.

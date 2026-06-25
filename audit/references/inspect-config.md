@@ -17,6 +17,7 @@ A markdown read-through misses everything here. **Parse the JSON — never eyeba
 5. **Gate coherence / precedence trap** (*self-defeating*). Anything in `ask` or `deny` that is *also* matched by an `allow` rule may not fire. Watch money-path commands (push / PR-merge / release / deploy) and destructive ones (delete / force-push). Reliable fix: make sure the gated command is **not** covered by `allow` at all, so the pause/block is guaranteed.
 
 6. **Secrets in plain text** (*risky*). Scan values for API keys, tokens, passwords. Flag; recommend an environment variable. Higher severity if the value sits under any git-tracked or synced path (check before rating).
+7. **Simplify** (elegance, not a defect). Propose consolidations that cut lines *and* prompts: merge narrow command rules into one broader rule — but never one that broadens a gated or dangerous command (push / merge / deploy / delete). Recommend boldly; the gates plus the safety envelope keep it safe.
 
 ## The one principle that protects speed
 

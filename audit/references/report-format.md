@@ -22,6 +22,11 @@
     **🟢 Too big (may get partly ignored by Claude)**
     ...
 
+    ## Simplifications I recommend (elegance, not defects)
+    1. **<headline>** — <what's cleaner + why> · I'd: <action> · reversible because: <verify/rollback>
+
+    (none? write "0 — already lean.")
+
     ## Risk check — what each "safe" fix would actually cost or cause
 
     | # | Fix | Risk of doing it | Risk of leaving it | Confidence it's real |
@@ -29,8 +34,8 @@
     | 1 | <short name> | <rating + why> | <plain-English future pain> | <rating + evidence> |
 
     ## Fix it for you?
-    - **Safe — low-risk, I can apply these:** <numbers>. Say "fix safe" for all, "fix N" for one. Every fix runs through the safety envelope (snapshot → verify → apply → re-verify → auto-rollback).
-    - **Needs your call:** <numbers>. Say "walk me through" and I'll take you through each.
+    - **Say "execute" (or "build")** — apply everything I recommend (safe fixes + simplifications) in one go, each safety-checked, pausing only on the judgment calls.
+    - **Safe only:** "fix safe". **One item:** "fix N". **The judgment calls:** "walk me through".
     - Say "expand N" for why a finding matters, what I'd do, and how I'd verify.
 
 If a bucket is empty, write "0 problems." Never invent findings.

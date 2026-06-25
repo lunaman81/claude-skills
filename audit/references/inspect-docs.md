@@ -9,5 +9,6 @@ Probes for every markdown/prose file in scope. Each maps to a failure-type and a
 5. **Spot conflicts.** Two files (or two lines) giving contradictory instructions → *self-defeating*.
 6. **Spot superseded/orphan docs.** `_v\d+` suffixes, draft/archive names, or docs nothing references → *dead*.
 7. **Spot empty files** (0 bytes) → *dead*. And **vague filler** ("be helpful", "consider carefully") that costs line budget for no action → *oversized*.
+8. **Simplify** (elegance, not a defect). Propose merging duplicated sections, moving bulk into references, flattening nesting — anything shorter and clearer with no loss of function. Recommend, don't just note.
 
 Translate every finding to plain English in the report — the founder is non-technical.
