@@ -15,6 +15,12 @@ A deliberate ritual for closing a working session on Openly. Stops `tasks/todo.m
 
 Do NOT run if no real work shipped (no commits, no doc decisions).
 
+## Step 0 — Route by how this repo tracks work
+
+Check the project's CLAUDE.md first:
+- **Board-based repos** (the project says its to-do list is a GitHub Projects board and `tasks/todo.md` is retired — e.g., openly): SKIP steps 1–4 and 6. Instead: close board issues that shipped this session, open ONE issue for anything that genuinely needs follow-up, and add a `tasks/lessons.md` line if there was a correction (step 5). Do NOT create a `session-end` commit — the board is the record.
+- **todo.md-based repos** (e.g., sentinel, family-office): follow the steps below unchanged.
+
 ## Steps
 
 ### 1. List commits since the last `session-end`
@@ -71,10 +77,7 @@ Examples:
 - `session-end 2026-05-11: Round 3 polish + GitHub migration finalization`
 - `session-end 2026-05-07: monitoring spec finalized + lesson logged`
 
-Then push:
-```
-git push
-```
+Then push per the push policy in the global CLAUDE.md: docs/todo commits like this one can push directly ONLY if the founder already approved the session's changes — otherwise ask first. Anything touching live-site code never ships this way (PR only).
 
 ## Anti-bloat checks (before declaring done)
 
