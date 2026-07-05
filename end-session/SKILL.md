@@ -1,6 +1,6 @@
 ---
 name: end-session
-description: Close a working session by reconciling `tasks/todo.md` against work that actually shipped, updating `tasks/lessons.md` if there was a correction, and committing as `session-end YYYY-MM-DD`. Use when the user says "end session," "wrap up," "save state," "we're done for today," or it's clear the session is winding down. Prevents bloat in `tasks/todo.md`.
+description: Close a working session by reconciling `tasks/todo.md` against work that actually shipped, updating `tasks/lessons.md` if there was a correction, and committing as `session-end YYYY-MM-DD`. Use when the user says "end session," "wrap up," "we're done for today," or it's clear the session is winding down. NOT for "save state" or "save context" mid-task — that's /context-save (this skill commits and closes out; it doesn't checkpoint working context). Prevents bloat in `tasks/todo.md`.
 ---
 
 # end-session

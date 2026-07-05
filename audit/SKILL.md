@@ -1,6 +1,6 @@
 ---
 name: audit
-description: This skill should be used whenever the founder asks for a health check on a file or folder, or any time they've done a stretch of edits to CLAUDE.md, skills, or settings. Use it on phrases like "audit", "audit this", "audit <name>", "is my setup clean", "check my config", "is anything broken", "what's stale in here" — even when they don't explicitly say "audit." Produces a plain-English report with three problem types (broken, out of date, bloated), fixed-wording impact per finding, honest per-fix risk ratings, and a snapshot → verify → apply → re-verify → auto-rollback safety envelope so applied fixes can't silently break a working setup.
+description: This skill should be used whenever the founder asks for a health check on a file or folder, or any time they've done a stretch of edits to CLAUDE.md, skills, or settings. Use it on phrases like "audit", "audit this", "audit <name>", "is my setup clean", "check my config", "is anything broken", "what's stale in here" — even when they don't explicitly say "audit." Produces a plain-English report with three problem types (broken, out of date, bloated), fixed-wording impact per finding, honest per-fix risk ratings, and a snapshot → verify → apply → re-verify → auto-rollback safety envelope so applied fixes can't silently break a working setup. NOT for shortening prose docs like specs, roadmaps, or strategy (that's /doc-simplifier) and NOT a code-quality dashboard (that's /health) — this audits config, skills, and setup for breakage.
 allowed-tools:
   - Bash
   - Read

@@ -96,54 +96,34 @@ Stop after the output above.
 
 ## Step C: Log the run to the scorecard
 
-After producing the output above, append one JSON line to the scorecard log.
-Fill in the values from the filter output you just produced, then run the
-bash block below. Uses `python3` (always available on macOS) to build the
-JSON so strings and arrays are escaped correctly.
-
-Before running the block: replace each `FILL_*` placeholder with real values
-from the filter output above. Do NOT leave any placeholder in place.
+After producing the output above, append one JSON line to the scorecard log
+via the shared logger. Every value is a command-line argument taken from the
+filter output you just produced — numbers unquoted, lists as JSON, strings
+quoted:
 
 ```bash
 eval "$(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null)" 2>/dev/null || true
 SLUG="${SLUG:-$(basename "$PWD" | tr -cd 'a-zA-Z0-9._-')}"
 SLUG="${SLUG:-unknown}"
-LOG_DIR="$HOME/.gstack/projects/$SLUG"
-LOG_FILE="$LOG_DIR/cut-log.jsonl"
-mkdir -p "$LOG_DIR" 2>/dev/null || true
+LOGGER="$HOME/Projects/claude-config/bin/log-scorecard"
 
-python3 - "$SLUG" "$LOG_FILE" <<'PY' || true
-import json, sys, datetime
-slug, log_file = sys.argv[1], sys.argv[2]
-entry = {
-    "date": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-    "project": slug,
-    "core_assumption": "FILL_CORE_ASSUMPTION",
-    "requirements_proposed": 0,   # FILL_PROPOSED (int)
-    "requirements_flagged":  0,   # FILL_FLAGGED  (int)
-    "requirements_deleted":  0,   # FILL_DELETED  (int)
-    "deleted":       ["FILL_ITEM"],   # list of short labels
-    "survived":      ["FILL_ITEM"],   # list of short labels
-    "overrides":     [],              # list of [OVERRIDE] labels, or []
-    "verdict":  "FILL_VERDICT",       # "GO" | "REVISE" | "STOP"
-    "notes":    "",                    # usually empty
-}
-with open(log_file, "a") as f:
-    f.write(json.dumps(entry) + "\n")
-print(f"Logged to: {log_file}")
-PY
+[ -x "$LOGGER" ] && "$LOGGER" --log "$HOME/.gstack/projects/$SLUG/cut-log.jsonl" \
+  "project=$SLUG" \
+  'core_assumption=<one-sentence assumption from the output>' \
+  'requirements_proposed=<int: total requirements brought in>' \
+  'requirements_flagged=<int: flagged as assumed in Step 1/2>' \
+  'requirements_deleted=<int: final delete-list count>' \
+  'deleted=["<short label per cut item>"]' \
+  'survived=["<short label per add-back>"]' \
+  'overrides=[]' \
+  'verdict=<GO | REVISE | STOP>' \
+  'notes=' \
+  || echo "logger missing — skipped scorecard entry"
 ```
 
-**How to fill the placeholders:**
-- `FILL_CORE_ASSUMPTION` → the one-sentence assumption from the output (string)
-- `requirements_proposed` → total requirements the user brought in (int)
-- `requirements_flagged` → how many were flagged as "assumed" in Step 1/2 (int)
-- `requirements_deleted` → final count of items in the delete list (int)
-- `deleted` → list of short labels for cut items (not full reasons)
-- `survived` → list of short labels for add-back items
-- `overrides` → list of items marked [OVERRIDE], or empty list `[]`
-- `FILL_VERDICT` → `"GO"`, `"REVISE"`, or `"STOP"`
-- `notes` → leave empty string unless there's something worth flagging for future review
+Replace every `<...>` with the real value before running. `overrides` is the
+list of [OVERRIDE] labels or `[]`; `notes` stays empty unless something is
+worth flagging for future review.
 
 ## Step D: Hand off
 

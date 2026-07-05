@@ -1,0 +1,40 @@
+{
+  "skill_name": "audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "audit evals/files/fixture-setup",
+      "expected_output": "The audit finds all three seeded problems in the fixture folder: (broken) config.json references scripts/missing-helper.sh which does not exist; (out of date) NOTES.md says 'as of January 2025, we still use the old form endpoint' which contradicts config.json's endpoint value; (bloated) PROCESS.md is padded far beyond its content. Each finding cites its evidence, gets a risk rating, and nothing is fixed without approval.",
+      "files": ["evals/files/fixture-setup"],
+      "expectations": [
+        "The dead reference to scripts/missing-helper.sh is found and classified under one of the three problem types",
+        "The stale January 2025 claim in NOTES.md contradicting config.json is found and classified under one of the three problem types",
+        "PROCESS.md padding is flagged as bloated",
+        "Every finding cites file-level evidence a human could spot-check",
+        "Each proposed fix carries a risk rating",
+        "No file in the fixture is modified before the user approves fixes"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "audit evals/files/fixture-clean",
+      "expected_output": "The folder is healthy (one small, accurate, internally consistent README). The audit says so and reports no findings — it does not invent problems to look thorough.",
+      "files": ["evals/files/fixture-clean"],
+      "expectations": [
+        "The verdict is healthy/clean with zero findings",
+        "No fixes are proposed",
+        "The report is short and does not manufacture issues"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "is my setup clean?",
+      "expected_output": "With no explicit target, the skill scopes itself per its own rules (defaults to the current project / the founder's config surface) and states what it is auditing before reporting, rather than silently picking an arbitrary folder.",
+      "expectations": [
+        "The skill states the scope it chose (or asks) before or at the top of the report",
+        "The chosen scope matches the skill's documented default",
+        "The output follows the three problem types (broken, out of date, bloated) structure"
+      ]
+    }
+  ]
+}

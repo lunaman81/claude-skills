@@ -1,0 +1,47 @@
+{
+  "skill_name": "cut",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/cut Build a customer portal for our roofing leads: login with email/password, a billing page, a dashboard showing quote history, push notifications, and an admin panel for us to manage users. The point is to let leads track the status of their roofing quote.",
+      "expected_output": "The filter identifies the core assumption (leads want to see quote status), deletes most of the feature list (auth, billing, dashboard history, notifications, admin panel) as not essential to testing that assumption, and proposes a tiny v1 (e.g. a status link or SMS) with a GO or REVISE verdict.",
+      "expectations": [
+        "The output names a single testable core assumption about leads wanting quote status",
+        "At least 3 of the 5 listed features land in the delete list with reasons",
+        "A v1 spec is proposed that is dramatically smaller than the request",
+        "A verdict of GO, REVISE, or STOP is stated explicitly",
+        "The scorecard log step is executed or shown with real values, not FILL placeholders"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/cut Add a single 'prefer a phone call instead?' checkbox to the quote form, to test whether leads would rather talk than fill out forms.",
+      "expected_output": "The filter recognizes an already-minimal idea: the core assumption is stated by the user, there is almost nothing to delete, and the verdict is a quick GO without inventing deletions to look busy.",
+      "expectations": [
+        "The verdict is GO",
+        "The filter does not invent deletions — the delete list is empty or near-empty",
+        "The output does not pad the response with unnecessary analysis of a one-checkbox change"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/cut The hero image on the homepage is broken, fix it",
+      "expected_output": "The skill declines to run: this is a bug fix / operational work, not a new build idea. It points to the bug path (/investigate) instead of running the deletion filter.",
+      "expectations": [
+        "The skill does not run the deletion filter on the bug report",
+        "It states that /cut is for new features and ideas, not bug fixes or routine work",
+        "It redirects to the bug/investigate path"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "/cut I want to add AI to our product somehow",
+      "expected_output": "The filter cannot extract a testable core assumption from a vague aspiration. Verdict is STOP or REVISE, with a concrete ask for what the AI should do for which user before anything can earn its way back in.",
+      "expectations": [
+        "The verdict is STOP or REVISE, not GO",
+        "The output says a testable core assumption is missing and asks for one",
+        "No feature list is invented on the user's behalf"
+      ]
+    }
+  ]
+}

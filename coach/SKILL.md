@@ -28,30 +28,25 @@ Rules: exactly ONE of each per week, no more. Upgrades are capped at ~30 minutes
 
 ## Step 1 — Mine the evidence (no self-report, no user input)
 
-Run all of these. `<WINDOW_START>` is a **bare date, `YYYY-MM-DD`** (midnight-aligned, e.g. 7 days back) — the same string feeds both `find -newermt` and the jq timestamp comparison; a date with a timezone offset breaks the jq compare. Run steps 1b–1d from the openly repo root — 1a is wrapped in a subshell so it can't change your working directory.
-
-**a. Gabriel's actual typed prompts** from Claude Code transcripts:
+**a–d. Run the miner** (it encodes the window-date, dedupe, and timezone
+calibration rules learned on real data 2026-07-05 — do NOT re-derive them by
+hand):
 
 ```bash
-(cd ~/.claude/projects/-Users-gabrielluna-ostaseski-Projects-openly && find . -name '*.jsonl' -newermt '<WINDOW_START>' | while read f; do
-  jq -r 'select(.type=="user" and (.message.content|type)=="string" and .isMeta!=true)
-    | select(.timestamp >= "<WINDOW_START>")
-    | select(.message.content | (startswith("<command-name>") or startswith("<local-command-stdout>") or startswith("<command-message>") or startswith("Caveat:") or startswith("<task-notification>") or startswith("<bash-input>") or startswith("<bash-stdout>")) | not)
-    | [.timestamp, (.sessionId[0:8]), (.message.content | gsub("[\\n\\t]";" ") | .[0:400])] | @tsv' "$f" 2>/dev/null
-done | sort > /tmp/coach-week-prompts.tsv)
+~/Projects/claude-config/bin/coach-mine        # last 7 days
+~/Projects/claude-config/bin/coach-mine 14d    # explicit window
 ```
 
-**Calibration rules (learned on real data, 2026-07-05):**
-- **Dedupe identical message bodies** — fan-out workflows log the same agent prompt many times at the same timestamp. Those are NOT Gabriel typing.
+It writes four evidence files and prints counts (including the thin-week check):
+- `/tmp/coach-week-prompts.tsv` — Gabriel's deduped typed prompts (timestamp, session, text)
+- `/tmp/coach-week-lessons.txt` — lessons.md correction lines from git log
+- `/tmp/coach-week-prs.json` — PRs in window (revert chains, fix-after-fix, held PRs; measure gate discipline HERE, not from transcripts)
+- `/tmp/coach-week-issues.json` — board issues (count created+closed same day = agent-narration smell; flag open 🚨 alerts)
+
+**Interpretation rules (judgment — yours, not the script's):**
 - Long polished "You are a …" mega-prompts may be agent-crafted prompts Gabriel pasted for handoffs/subagents. Count them as evidence of **prompt delegation** (a good leverage habit), not as his raw writing.
 - Distinct `sessionId`s per day = the parallelism measure for Step 6.
-- Expect roughly 200–400 real typed messages in a full week; if you see <50, the week is thin — say so.
-
-**b. Corrections he had to make:** `git log --since="<WINDOW_START>" -p --format="COMMIT %h %ai %s" -- tasks/lessons.md apps/site-luna/tasks/lessons.md` — added lines are the correction log.
-
-**c. Rework and gates:** `gh pr list --state all --limit 60 --json number,title,state,createdAt,mergedAt` filtered to the window. Look for revert chains, fix-after-fix on one subsystem, PRs held/redrafted. Measure gate discipline HERE (PRs + incident issues), not from transcripts.
-
-**d. Board hygiene:** `gh issue list --state all --limit 100 --json number,title,createdAt,closedAt` — count created+closed same day (agent-narration smell), and flag any open 🚨 alert issues.
+- Expect roughly 200–400 real typed messages in a full week; the script flags <50 as thin — if it does, say the review is thin.
 
 **e. Coach history:** read ALL `~/.gstack/projects/openly-roofing-openly/coach/*.json` (oldest first) for the trajectory, the changes ledger, and last week's ONE habit.
 
