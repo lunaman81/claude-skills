@@ -85,9 +85,11 @@ Estimate the mix from session overlap, fan-outs, background tasks, and cron/rout
 - **End with EXACTLY ONE habit for next week** — the highest-leverage one, as a concrete action he can do at the keyboard, never a vibe.
 - Tables in chat only. No dashboards (standing founder rule).
 
-## Step 8 — Save the snapshot
+## Step 8 — Save the snapshot, THEN deliver the report (order is load-bearing)
 
-Write `~/.gstack/projects/openly-roofing-openly/coach/YYYY-MM-DD.json` (Write tool creates the dir). **JSON only — a creation-guard hook blocks loose .md files**; embed the condensed report as a `"report"` string field so the gstack artifacts sync carries the full review to the private artifacts repo (gbrain-indexable). Schema: copy the shape of the newest existing snapshot (window, counts, scores, hygiene_main_build, leverage, moments, one_change, last_week_change_stuck, changes_ledger, report). Then best-effort sync:
+**⚠️ Display rule — the #1 bug this skill has already had (2026-07-05, twice):** in Claude Code, text written between tool calls is often NOT shown to the user. The FULL report must be the very LAST message of the turn, with ZERO tool calls after it. So: save the snapshot and run the sync FIRST, and only then print the report. Never print the report and then save/sync — the report vanishes behind the tool activity and the user sees "it ran something but displayed nothing." Same rule for Step 2: keep the moments message short and let AskUserQuestion be the only thing that follows it.
+
+Write `~/.gstack/projects/openly-roofing-openly/coach/YYYY-MM-DD.json` (add a `-14d` style suffix for non-default windows so the weekly baseline never gets overwritten). **JSON only — a creation-guard hook blocks loose .md files**; embed the condensed report as a `"report"` string field so the gstack artifacts sync carries the full review to the private artifacts repo (gbrain-indexable). Schema: copy the shape of the newest existing snapshot (window, counts, scores, hygiene_main_build, leverage, moments, one_change, last_week_change_stuck, changes_ledger, report). Then best-effort sync:
 
 ```bash
 ~/.claude/skills/gstack/bin/gstack-brain-sync --discover-new 2>/dev/null || true
@@ -97,6 +99,8 @@ Write `~/.gstack/projects/openly-roofing-openly/coach/YYYY-MM-DD.json` (Write to
 (The `--discover-new` pass is required — `--once` alone will not pick up a brand-new snapshot file. Verified 2026-07-05. If the sync says the file isn't allowlisted, `~/.gstack/.brain-allowlist` needs `projects/*/coach/*.json` under the USER ADDITIONS marker — already added on the Mac mini.)
 
 ## Output order (the report Gabriel sees)
+
+The report is ONE message, the FINAL message of the turn, after all tool work (mining, snapshot, sync) is complete. No tool calls after it.
 
 1. Headline trend (or "baseline week" on first run)
 2. Did last week's ONE habit stick? (yes/no + proof)
