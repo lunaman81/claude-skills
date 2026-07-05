@@ -97,6 +97,15 @@ Estimate the mix from session overlap, fan-outs, background tasks, and cron/rout
   2. **ONE habit** — only for what no mechanism can do (judgment, taste, when to stop). Concrete keyboard action, never a vibe.
 - Tables in chat only. No dashboards (standing founder rule).
 
+## Step 7.5 — Goals delta (5 min, added 2026-07-05 by goals-system build)
+
+Read the life-goals page: `gbrain get goals/index` (DATABASE_URL + gbrain are on PATH via ~/.zshenv). Skip silently if the page is missing or still has `[PLACEHOLDER` content (system not yet live). Otherwise:
+
+1. **Touched/untouched per domain** — from BOTH worlds: this week's brain activity (`gbrain list -n 30`, look at last-7-days meetings/, decisions/, finance/, emails/ pages — this captures Hermes-side work) AND this week's Claude Code session topics (already mined in Step 1). One line per domain: touched (evidence) or untouched.
+2. **ONE drift flag** — the domain that is both least-touched and worst-scoring. Ask: act Monday, or consciously defer to the monthly review? Record the answer on the page's section ("deferred to monthly YYYY-MM-DD") so next week doesn't re-nag.
+3. **Update moved numbers** — any Current he confirms changed, write to `goals/index` via `gbrain put` with source `(source: gabriel, weekly)` and refresh that section's "Last reviewed".
+4. **Never** rewrite targets, rules, or mission here — that's /goals (monthly) territory. If the page's `next_review_due` has passed, say so plainly.
+
 ## Step 8 — Save the snapshot, THEN deliver the report (order is load-bearing)
 
 **⚠️ Display rule — the #1 bug this skill has already had (2026-07-05, twice):** in Claude Code, text written between tool calls is often NOT shown to the user. The FULL report must be the very LAST message of the turn, with ZERO tool calls after it. So: save the snapshot and run the sync FIRST, and only then print the report. Never print the report and then save/sync — the report vanishes behind the tool activity and the user sees "it ran something but displayed nothing." Same rule for Step 2: keep the moments message short and let AskUserQuestion be the only thing that follows it.
@@ -122,4 +131,5 @@ The report is ONE message, the FINAL message of the turn, after all tool work (m
 6. Main build: the six yes/no lines
 7. How much ran without you + the next delegation opportunity
 8. Trajectory table + changes ledger (skip on first run)
-9. **THE WEEK'S PAIR** — the system upgrade (approve → build → verify, same session) and **THE ONE HABIT**, bolded, the last thing he reads
+9. Goals delta — per-domain touched/untouched, the one drift flag + his call, numbers updated (skip if goals page not yet live)
+10. **THE WEEK'S PAIR** — the system upgrade (approve → build → verify, same session) and **THE ONE HABIT**, bolded, the last thing he reads
