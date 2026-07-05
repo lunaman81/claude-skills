@@ -1,11 +1,18 @@
 ---
 name: coach
-description: Weekly AI-collaboration coaching review for Gabriel (non-technical founder). Reviews HOW he worked with Claude this week — not what shipped (that's /retro). Mines his real typed prompts from session transcripts, lessons.md corrections, PR/revert history, and the board; scores six founder skills against countable events; tracks week-over-week trajectory; ends with exactly ONE habit to change. Use when the user says "coach", "/coach", "coaching review", "weekly coaching", "how did I collaborate", "review how I worked", or right after a weekly /retro.
+description: Weekly AI-collaboration coaching review for Gabriel (non-technical founder). Reviews HOW he worked with Claude this week — not what shipped (that's /retro) — and upgrades BOTH loops every week; the human (ONE habit) and the system (ONE mechanism — hook/rule/job — approved, built, and verified in the same session). Mines his real typed prompts from session transcripts, lessons.md corrections, PR/revert history, and the board; scores six founder skills against countable events; grades habits by behavior counts and past upgrades by their deterministic logs. Use when the user says "coach", "/coach", "coaching review", "weekly coaching", "how did I collaborate", "review how I worked", or right after a weekly /retro.
 ---
 
 # /coach — Weekly AI-Collaboration Coaching Review
 
 /retro answers "what did the repo produce." /coach answers "how well did the founder drive the AI, and what's the next frontier in how he works." Run it weekly, ideally right after /retro.
+
+**The two loops (decided 2026-07-05).** Every failure pattern found gets triaged with one question: *can a mechanism prevent this?*
+
+- **YES → it becomes the week's SYSTEM UPGRADE** — a hook, rule, scheduled job, or locked prompt: spec'd by the coach, approved by Gabriel, **built and tested in the same session**, shipping with a deterministic proof-of-life (a log or test the next /coach reads without judgment). Precedent: the board flood was fixed by the inflow-rule hook, not by remembering; the sheet corruption by by-name writes. Mechanisms don't forget.
+- **NO (judgment, taste, when-to-stop) → it becomes the week's HABIT** for Gabriel, graded next week by behavior counts.
+
+Rules: exactly ONE of each per week, no more. Upgrades are capped at ~30 minutes of build — bigger means over-built; shrink it. **Removal counts as an upgrade** — if a past mechanism causes friction, the week's proposal may be to delete it. Upgrades touching live-site code follow the normal PR path; hooks/config/skills commit directly (Tier 2).
 
 **Scope boundary:** coach HOW Gabriel works, never WHAT to build. Product priorities belong to Gabriel, the board, and /growth-doctor.
 
@@ -52,9 +59,12 @@ done | sort > /tmp/coach-week-prompts.tsv)
 
 Pick the 3–5 defining moments of the week. Present them in plain English with his own quotes, then ONE AskUserQuestion: "Did I read these right?" (options: right / mostly-with-corrections / wrong). Fold corrections in before scoring. Keep this message SHORT — the full report comes after confirmation.
 
-## Step 3 — Grade last week's ONE habit first
+## Step 3 — Grade last week's ledger first (both loops)
 
-Did it stick? Yes/no + the evidence (count it in this week's prompts). This always leads the report — it's the loop that compounds. First run: skip.
+This always leads the report — it's the loop that compounds. First run: skip.
+
+- **The habit (probabilistic):** did it stick? Yes/no + the behavior count from this week's prompts.
+- **Each past system upgrade (deterministic):** read its proof-of-life and report the numbers, not an opinion. E.g. the done-line gate: `jq -r .verdict ~/.gstack/projects/openly-roofing-openly/coach/done-line-gate.jsonl` filtered to the window → "34 build asks metered, 30 pass / 4 gated." A cron job: runs completed / expected. A rule: violations counted in transcripts. **An upgrade whose log is empty or missing is BROKEN or unused — say so plainly; silent mechanisms are the failure mode.** If an upgrade caused friction (false fires, founder annoyance in the transcripts), propose removing or tuning it as this week's upgrade.
 
 ## Step 4 — Score six founder skills (counts first, then a 1–10)
 
@@ -82,14 +92,16 @@ Estimate the mix from session overlap, fan-outs, background tasks, and cron/rout
 - **Trajectory table** across ALL saved weeks (counts, not vibes): e.g. "asks with done-criteria: 60% → 68% → 75%".
 - **Changes ledger:** every past week's ONE habit and whether it stuck ("4 of 6 habits became permanent" is the truest improvement measure).
 - **Headline:** up / flat / down vs the 4-week rolling average, one sentence why.
-- **End with EXACTLY ONE habit for next week** — the highest-leverage one, as a concrete action he can do at the keyboard, never a vibe.
+- **End with the week's PAIR, triaged mechanism-first:**
+  1. **ONE system upgrade** — the highest-leverage failure pattern a mechanism can kill. Present as: the pattern (with evidence) → the mechanism (hook/rule/job/locked prompt, ≤30-min build) → its proof-of-life (the exact log/test next Friday reads). Get Gabriel's approval via AskUserQuestion, then **build it, test it deterministically (sample inputs → expected outputs), and append it to the ledger — in this same session.** If he declines, record "declined" in the ledger; don't re-pitch it weekly.
+  2. **ONE habit** — only for what no mechanism can do (judgment, taste, when to stop). Concrete keyboard action, never a vibe.
 - Tables in chat only. No dashboards (standing founder rule).
 
 ## Step 8 — Save the snapshot, THEN deliver the report (order is load-bearing)
 
 **⚠️ Display rule — the #1 bug this skill has already had (2026-07-05, twice):** in Claude Code, text written between tool calls is often NOT shown to the user. The FULL report must be the very LAST message of the turn, with ZERO tool calls after it. So: save the snapshot and run the sync FIRST, and only then print the report. Never print the report and then save/sync — the report vanishes behind the tool activity and the user sees "it ran something but displayed nothing." Same rule for Step 2: keep the moments message short and let AskUserQuestion be the only thing that follows it.
 
-Write `~/.gstack/projects/openly-roofing-openly/coach/YYYY-MM-DD.json` (add a `-14d` style suffix for non-default windows so the weekly baseline never gets overwritten). **JSON only — a creation-guard hook blocks loose .md files**; embed the condensed report as a `"report"` string field so the gstack artifacts sync carries the full review to the private artifacts repo (gbrain-indexable). Schema: copy the shape of the newest existing snapshot (window, counts, scores, hygiene_main_build, leverage, moments, one_change, last_week_change_stuck, changes_ledger, report). Then best-effort sync:
+Write `~/.gstack/projects/openly-roofing-openly/coach/YYYY-MM-DD.json` (add a `-14d` style suffix for non-default windows so the weekly baseline never gets overwritten). **JSON only — a creation-guard hook blocks loose .md files**; embed the condensed report as a `"report"` string field so the gstack artifacts sync carries the full review to the private artifacts repo (gbrain-indexable). Schema: copy the shape of the newest existing snapshot (window, counts, scores, hygiene_main_build, leverage, moments, one_change, last_week_change_stuck, changes_ledger, report). Ledger entries carry both loops: `{"week", "type": "habit"|"upgrade", "change", "stuck": "yes|no|pending|declined", "proof": "<where its log/test lives — required for upgrades>"}`. Then best-effort sync:
 
 ```bash
 ~/.claude/skills/gstack/bin/gstack-brain-sync --discover-new 2>/dev/null || true
@@ -103,11 +115,11 @@ Write `~/.gstack/projects/openly-roofing-openly/coach/YYYY-MM-DD.json` (add a `-
 The report is ONE message, the FINAL message of the turn, after all tool work (mining, snapshot, sync) is complete. No tool calls after it.
 
 1. Headline trend (or "baseline week" on first run)
-2. Did last week's ONE habit stick? (yes/no + proof)
+2. Last week's ledger graded — habit (behavior counts) + every live upgrade (its log's numbers)
 3. What you did well — 2-3 bullets with quotes
 4. What cost you — 1-2 bullets with quotes and the hours
 5. Scores table (six skills, counts visible)
 6. Main build: the six yes/no lines
 7. How much ran without you + the next delegation opportunity
 8. Trajectory table + changes ledger (skip on first run)
-9. **THE ONE HABIT** — bolded, concrete, last thing he reads
+9. **THE WEEK'S PAIR** — the system upgrade (approve → build → verify, same session) and **THE ONE HABIT**, bolded, the last thing he reads
