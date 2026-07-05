@@ -105,6 +105,7 @@ Read the life-goals page: `gbrain get goals/index` (DATABASE_URL + gbrain are on
 2. **ONE drift flag** — the domain that is both least-touched and worst-scoring. Ask: act Monday, or consciously defer to the monthly review? Record the answer on the page's section ("deferred to monthly YYYY-MM-DD") so next week doesn't re-nag.
 3. **Update moved numbers** — any Current he confirms changed, write to `goals/index` via `gbrain put` with source `(source: gabriel, weekly)` and refresh that section's "Last reviewed".
 4. **Never** rewrite targets, rules, or mission here — that's /goals (monthly) territory. If the page's `next_review_due` has passed, say so plainly.
+5. **Intervention rule (added 2026-07-05):** if his answer to the drift flag is "act", pin it as ONE concrete, external, dated action (a calendar block, a message to a named person, a canceled commitment, a decision) — note it on that domain's section, and check it FIRST in next week's delta before flagging anything new. Observations in this step follow the no-generic-advice rule: cite his own numbers, rules, or past words — never "focus more on X".
 
 ## Step 8 — Save the snapshot, THEN deliver the report (order is load-bearing)
 
