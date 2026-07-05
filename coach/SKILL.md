@@ -92,6 +92,10 @@ Estimate the mix from session overlap, fan-outs, background tasks, and cron/rout
   2. **ONE habit** — only for what no mechanism can do (judgment, taste, when to stop). Concrete keyboard action, never a vibe.
 - Tables in chat only. No dashboards (standing founder rule).
 
+## Step 7.4 — Monthly harness-audit nudge (10 seconds)
+
+If it's been ~30+ days since the newest file in `~/tasks/harness-audits/*.md` (or the folder is empty), add one line to the report: "Your monthly `/harness-audit` is due — it reviews the SETUP's shape (skills, resolver, MCP), not your behavior." Do NOT run it here — it's a separate skill with its own approval flow. Skip silently if the last run was under 30 days ago. This mirrors how this skill defers the monthly goals review to /goals rather than absorbing it.
+
 ## Step 7.5 — Goals delta (5 min, added 2026-07-05 by goals-system build)
 
 Read the life-goals page: `gbrain get goals/index` (DATABASE_URL + gbrain are on PATH via ~/.zshenv). Skip silently if the page is missing or still has `[PLACEHOLDER` content (system not yet live). Otherwise:
