@@ -134,8 +134,8 @@ After the log writes successfully, tell the user:
    - **GO** → "Ready for `/plan-ceo-review` with this v1 spec."
    - **REVISE** → "Adjust the request per the note above, then re-run `/cut`."
    - **STOP** → "This isn't ready yet. Try [suggestion from filter output]."
-3. "Logged to the scorecard. After 10+ runs, we'll have real data on your
-   over-building patterns."
+3. "Logged to the scorecard. /coach reads it weekly (Step 1g) as the
+   over-build baseline."
 
 Do not plan. Do not suggest implementation details beyond the v1 spec.
 Do not start building. Stop here.

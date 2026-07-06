@@ -50,6 +50,16 @@ It writes four evidence files and prints counts (including the thin-week check):
 
 **e. Coach history:** read ALL `~/.gstack/projects/openly-roofing-openly/coach/*.json` (oldest first) for the trajectory, the changes ledger, and last week's ONE habit.
 
+**f. Long-window evidence (added 2026-07-05, memory-audit #4):** transcripts only
+survive ~30 days, but `~/.claude/history.jsonl` holds every typed prompt since April
+(timestamp, project, text). For any look-back beyond the transcript window (trajectory
+claims, "has this happened before"), mine history.jsonl — never say "no prior evidence"
+based on transcripts alone.
+
+**g. Over-build evidence:** read `~/.gstack/projects/*/cut-log.jsonl` (11 historical
+/cut runs). Use delete/survive ratios as the over-build baseline in Step 4 scoring —
+this is the scorecard's designated reader.
+
 ## Step 2 — Confirm the read
 
 Pick the 3–5 defining moments of the week. Present them in plain English with his own quotes, then ONE AskUserQuestion: "Did I read these right?" (options: right / mostly-with-corrections / wrong). Fold corrections in before scoring. Keep this message SHORT — the full report comes after confirmation.
@@ -60,6 +70,22 @@ This always leads the report — it's the loop that compounds. First run: skip.
 
 - **The habit (probabilistic):** did it stick? Yes/no + the behavior count from this week's prompts.
 - **Each past system upgrade (deterministic):** read its proof-of-life and report the numbers, not an opinion. E.g. the done-line gate: `jq -r .verdict ~/.gstack/projects/openly-roofing-openly/coach/done-line-gate.jsonl` filtered to the window → "34 build asks metered, 30 pass / 4 gated." A cron job: runs completed / expected. A rule: violations counted in transcripts. **An upgrade whose log is empty or missing is BROKEN or unused — say so plainly; silent mechanisms are the failure mode.** If an upgrade caused friction (false fires, founder annoyance in the transcripts), propose removing or tuning it as this week's upgrade.
+
+## Step 3.7 — Promotion sweep: two strikes and it becomes a rule (added 2026-07-05, memory-audit #4)
+
+The audit proved the same correction class repeats 3–4× before a mechanism ends it.
+Close that gap here, weekly:
+1. Cluster this window's lessons lines (`/tmp/coach-week-lessons.txt`) by correction
+   *class* (jargon, over-build, wrong-channel-checked, git-ceremony, …), then check each
+   class against the full lessons history (`git log -p -- tasks/lessons.md
+   apps/site-luna/tasks/lessons.md`).
+2. **Any class at ≥2 occurrences → propose ONE promotion** (pick the cheapest mechanism
+   that ends it: feedback memory → CLAUDE.md rule → hook). This can BE the week's system
+   upgrade — don't invent a separate one if a promotion is due.
+3. On approval, mark the source lesson lines `[PROMOTED → <target> YYYY-MM-DD]` so the
+   queue visibly drains and next week's sweep skips them.
+4. **Decay half:** promoted rules with zero hits in 8 weeks (per their proof-of-life
+   logs) → propose demotion/removal. Rules must pay rent too.
 
 ## Step 4 — Score six founder skills (counts first, then a 1–10)
 

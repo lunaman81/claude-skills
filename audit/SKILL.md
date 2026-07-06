@@ -33,6 +33,18 @@ The skill works on any file type. Match each file to its inspection guide, and r
   - **Verify against the live system.** A reference is only real if the target exists; a tool grant only counts if the tool is connected; a cited line is only right once you've read it.
 - **Judge against purpose, not just freshness.** Ask what the file is *for*, and whether anything in it defeats that job — a rule that cancels a safety rule, a gate that doesn't gate.
 
+## 2.5 Stale-memory sweep (added 2026-07-05, memory-audit #4 — runs on the weekly no-target audit)
+
+When the audit target is the setup (not a specific named file), also re-verify the
+**3 stalest memory files** in `~/.claude/projects/*/memory/` (oldest modified first,
+skipping ones verified in the last 6 weeks). For each: check its verifiable claims
+against the live system (paths exist, tools respond, states match). Still true →
+append nothing, just note "re-verified YYYY-MM-DD" in its frontmatter description.
+False → rewrite the file to current state (replace, never append correction blocks)
+or propose deletion. Contradicts a sibling memory → merge to one current-state file.
+This is the decay mechanism for memory — CLAUDE.md's "Stale → update or delete" rule
+finally enforced on a cadence.
+
 ## 3. Classify each finding against the impact table
 
 Read `references/impact-table.md`. Every row is an instance of one of six **failure-types** — **dead** (points at something gone), **duplicate** (already covered elsewhere), **self-defeating** (one rule cancels another), **false-claim** (says something checkable that's wrong), **risky** (e.g. a secret in the open), **oversized**. Match each finding to a row and copy the **Impact** wording verbatim — never rephrase. Use the row's severity bucket (🔴 Broken, 🟡 Out of date, 🟢 Too big) to place it. If a finding fits a type but no row matches: label it **"Likely, not verified,"** describe it plainly, and **append a new row** so the next audit catches it automatically. Never dramatize.
