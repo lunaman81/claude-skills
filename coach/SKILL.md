@@ -124,7 +124,7 @@ If it's been ~30+ days since the newest file in `~/tasks/harness-audits/*.md` (o
 
 ## Step 7.5 — Goals delta (5 min, added 2026-07-05 by goals-system build)
 
-Read the life-goals page: `gbrain get goals/index` (DATABASE_URL + gbrain are on PATH via ~/.zshenv). Skip silently if the page is missing or still has `[PLACEHOLDER` content (system not yet live). Otherwise:
+Read the life-goals page: `gbrain get goals/index` (the `gbrain` shim at ~/.local/bin pins the brain DB itself — never set DATABASE_URL). Skip silently if the page is missing or still has `[PLACEHOLDER` content (system not yet live). Otherwise:
 
 1. **Touched/untouched per domain** — from BOTH worlds: this week's brain activity (`gbrain list -n 30`, look at last-7-days meetings/, decisions/, finance/, emails/ pages — this captures Hermes-side work) AND this week's Claude Code session topics (already mined in Step 1). One line per domain: touched (evidence) or untouched.
 2. **ONE drift flag** — the domain that is both least-touched and worst-scoring. Ask: act Monday, or consciously defer to the monthly review? Record the answer on the page's section ("deferred to monthly YYYY-MM-DD") so next week doesn't re-nag.
