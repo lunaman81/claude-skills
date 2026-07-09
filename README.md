@@ -31,7 +31,7 @@ Personal Claude Code skills. Drop into `~/.claude/skills/`.
 ```bash
 git clone https://github.com/lunaman81/claude-skills.git ~/claude-skills
 ln -s ~/claude-skills/cut ~/.claude/skills/cut
-ln -s ~/claude-skills/audit ~/.claude/skills/audit
+ln -s ~/claude-skills/coach ~/.claude/skills/coach
 ln -s ~/claude-skills/reorganize-files ~/.claude/skills/reorganize-files
 ln -s ~/claude-skills/write-like-amazon ~/.claude/skills/write-like-amazon
 ```

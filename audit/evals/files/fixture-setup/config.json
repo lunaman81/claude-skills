@@ -1,5 +1,0 @@
-{
-  "form_endpoint": "https://api.example.com/v2/quote",
-  "helper_script": "scripts/missing-helper.sh",
-  "retries": 3
-}
