@@ -149,7 +149,7 @@ Write `~/.gstack/projects/openly-roofing-openly/coach/YYYY-MM-DD.json` (add a `-
 
 The report is ONE message, the FINAL message of the turn, after all tool work (mining, snapshot, sync) is complete. No tool calls after it.
 
-1. Headline trend (or "baseline week" on first run)
+1. Headline trend (or "baseline week" on first run) — render as ONE glanceable plain-English line matching the /setup-review format: the 1–2 metrics that matter most across the last 3 weeks with arrows and which direction is good, e.g. **📈 Trend (last 3 wks):** asks with done-criteria 60% → 68% → 75% (↑ good) · repeat-loops 4 → 2 → 1 (↓ good). One line, first thing he reads.
 2. Last week's ledger graded — habit (behavior counts) + every live upgrade (its log's numbers)
 3. What you did well — 2-3 bullets with quotes
 4. What cost you — 1-2 bullets with quotes and the hours
