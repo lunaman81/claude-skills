@@ -29,7 +29,7 @@ The founder types a rough ask. Your job is to pull the real ask out of his head 
 2. **Grill.** Usually 2–4 questions, one at a time: the goal (what does done look like?), scope boundaries (what's in, what's out), and the deliverable (what form should the answer take?). Stop as soon as you could execute the prompt without guessing — this is a sharpening pass, not a spec.
 3. **Write the boosted prompt.** Plain English, in his voice — something he could plausibly have typed. Structure it as:
    - What to do (one sentence)
-   - Context worth carrying (facts from his answers and your research)
+   - Context worth carrying (facts from his answers and your research), naming the inputs it should use (data sources, files, tools)
    - Scope: what's in / what's out
    - Done means: numbered, checkable criteria
    - Output: the format he wants back
