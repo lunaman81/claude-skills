@@ -5,7 +5,7 @@ description: Close a working session by reconciling `tasks/todo.md` against work
 
 # end-session
 
-A deliberate ritual for closing a working session on Openly. Stops `tasks/todo.md` from bloating with shipped items that never got moved to **Done**.
+A deliberate ritual for closing a working session, in whichever project you are in. Stops `tasks/todo.md` from bloating with shipped items that never got moved to **Done**. (Step 0 routes by how the repo tracks work — it is not Openly-specific, despite how this line read until 2026-08-18.)
 
 ## When to run
 
