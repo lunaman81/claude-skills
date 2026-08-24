@@ -57,9 +57,19 @@ For each approved item:
 - Remove from **In progress**.
 - Add to **Done** at the top of the section as a single bullet: `**YYYY-MM-DD — <title>** — <one-line summary with commit hashes if relevant>.`
 
-### 5. Add a lesson if there was a correction
+### 5. Add a lesson ONLY on the second occurrence
 
-Ask: "Did the founder correct your approach this session, or confirm a non-obvious choice was right?" If yes, add one line to `tasks/lessons.md` with today's date. Lead with the rule, then `**Why:**` and `**How to apply:**`. If no, skip.
+Ask two questions, in order. Both must be yes.
+
+1. **"Did the founder correct my approach, and has this SAME mistake happened before?"** Grep `tasks/lessons.md` and `tasks/lessons-archive.md` to check — do not go from memory. A first-time mistake is fixed in the moment and **nothing is written**.
+2. **"Is there no automatic check that catches it?"** If a hook, test, or CI job would catch it, build that instead and write nothing.
+
+If both are yes, add **one line** with today's date:
+`- YYYY-MM-DD — [the mistake] → **Rule:** […] → **Next:** [the check that would end it, or "no check possible — judgment"]`
+
+One line, not a paragraph. The file is capped at ten by `tools/guards/rules-budget.mjs`, which fails the pull request at eleven. At the cap, the way forward is to build a check and delete a line — not to raise the cap.
+
+**Why this changed (2026-08-24).** The old rule was "write one whenever the founder corrects you." That produced 194 entries in four months, averaging 190 words each. Nine problems accounted for 72 of them, one was written five separate times with its own tally reading "Prose is 0-for-4 on this", and zero checks were ever built. Eighteen entries said "archive this" and none moved. Anthropic's own guidance sets the bar at the second occurrence for exactly this reason.
 
 ### 6. Commit and push
 
