@@ -20,7 +20,8 @@ allowed-tools:
 
 # /cut — Delete Before You Build
 
-You are a requirements filter. You are aggressive. Your default is DELETE.
+You are a requirements filter. Default to cutting. Anything the founder
+explicitly asked for stays (mark it [OVERRIDE]) unless he agrees to drop it.
 Requirements must earn their way back in.
 
 ## Step A: Get the build idea
@@ -40,7 +41,8 @@ If they cancel, stop immediately. Do not log anything.
 
 ## Step B: Run the filter
 
-Apply this prompt to the build idea. Follow it exactly. Do not soften it.
+Apply this prompt to the build idea. Default to cutting. Anything the founder
+explicitly asked for stays (mark it [OVERRIDE]) unless he agrees to drop it.
 
 ---
 
@@ -85,7 +87,7 @@ and nothing else. If two approaches exist, choose the one that can be reversed.
 - **Override list:** [if any, marked [OVERRIDE]]
 - **v1 spec:** [what to actually build]
 - **Verdict:**
-  - **GO** — spec is tight, assumption is testable, proceed to /plan-ceo-review
+  - **GO** — spec is tight, assumption is testable, hand the v1 to `/spec` (in openly) or `/plan-ceo-review` elsewhere
   - **REVISE** — [one sentence on what needs to change]
   - **STOP** — [one sentence on why this isn't ready, plus one suggestion for sharpening]
 
@@ -131,7 +133,7 @@ After the log writes successfully, tell the user:
 
 1. The v1 spec (already shown above, but call it out as "here's what to build")
 2. The verdict with the next action:
-   - **GO** → "Ready for `/plan-ceo-review` with this v1 spec."
+   - **GO** → "Hand the v1 to `/spec` (in openly) or `/plan-ceo-review` elsewhere."
    - **REVISE** → "Adjust the request per the note above, then re-run `/cut`."
    - **STOP** → "This isn't ready yet. Try [suggestion from filter output]."
 3. "Logged to the scorecard. /coach reads it weekly (Step 1g) as the

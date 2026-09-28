@@ -1,6 +1,6 @@
 ---
 name: end-session
-description: Close a working session by reconciling `tasks/todo.md` against work that actually shipped, updating `tasks/lessons.md` if there was a correction, and committing as `session-end YYYY-MM-DD`. Use when the user says "end session," "wrap up," "we're done for today," or it's clear the session is winding down. NOT for "save state" or "save context" mid-task — that's /context-save (this skill commits and closes out; it doesn't checkpoint working context). Prevents bloat in `tasks/todo.md`.
+description: Close a working session. In board repos (e.g. openly) follow that repo's CLAUDE.md Session > End: close shipped issues, no session-end file. In tasks/todo.md repos: reconcile todo.md, update lessons on a repeat correction, commit as session-end. Use when the user says "end session," "wrap up," "we're done for today," or it's clear the session is winding down. NOT for "save state" or "save context" mid-task — that's /context-save (this skill commits and closes out; it doesn't checkpoint working context). Prevents bloat in `tasks/todo.md`.
 ---
 
 # end-session
@@ -9,7 +9,7 @@ A deliberate ritual for closing a working session, in whichever project you are 
 
 ## When to run
 
-- User says "end session," "let's wrap up," "save state," "we're done."
+- User says "end session," "let's wrap up," "we're done."
 - The user is about to stop working and the session shipped real code or docs.
 - Proactively offer to run it if you've shipped 3+ items in a session and todo.md hasn't been touched.
 
@@ -18,7 +18,7 @@ Do NOT run if no real work shipped (no commits, no doc decisions).
 ## Step 0 — Route by how this repo tracks work
 
 Check the project's CLAUDE.md first:
-- **Board-based repos** (the project says its to-do list is a GitHub Projects board and `tasks/todo.md` is retired — e.g., openly): SKIP steps 1–4 and 6. Instead: close board issues that shipped this session, open ONE issue for anything that genuinely needs follow-up, and add a `tasks/lessons.md` line if there was a correction (step 5). Do NOT create a `session-end` commit — the board is the record.
+- **Board-based repos** (the project says its to-do list is a GitHub Projects board and `tasks/todo.md` is retired — e.g., openly): SKIP steps 1–4 and 6. Instead: follow the repo's CLAUDE.md Session > End. Open an issue only if something outside the session blocks the work (a person, vendor, scheduled job or date), via `tools/board/new-issue.mjs`; everything else is a ticked line in the reply. A lessons line only when the same mistake happened before (step 5). Do NOT create a `session-end` commit — the board is the record.
 - **todo.md-based repos** (e.g., sentinel, family-office): follow the steps below unchanged.
 
 ## Steps
@@ -36,7 +36,7 @@ If no previous session-end commit exists, fall back to commits in the last 24 ho
 For each item:
 - Did it ship in one of the commits from step 1? → propose moving it to **Done**.
 - Is it marked `[x]`? → it must move. `[x]` items in **In progress** are wrong by definition.
-- Was it superseded by a decision (check `tasks/decisions.md` and `tasks/session-log.md`)? → propose moving to Done or Blocked with a note.
+- Was it superseded by a decision? → propose moving to Done or Blocked with a note.
 
 ### 3. Show the founder the proposed moves before writing
 
@@ -67,7 +67,7 @@ Ask two questions, in order. Both must be yes.
 If both are yes, add **one line** with today's date:
 `- YYYY-MM-DD — [the mistake] → **Rule:** […] → **Next:** [the check that would end it, or "no check possible — judgment"]`
 
-One line, not a paragraph. The file is capped at ten by `tools/guards/rules-budget.mjs`, which fails the pull request at eleven. At the cap, the way forward is to build a check and delete a line — not to raise the cap.
+One line, not a paragraph. The file is capped at five by `tools/guards/rules-budget.mjs` (openly), which fails the pull request at six. At the cap, the way forward is to build a check and delete a line — not to raise the cap.
 
 **Why this changed (2026-08-24).** The old rule was "write one whenever the founder corrects you." That produced 194 entries in four months, averaging 190 words each. Nine problems accounted for 72 of them, one was written five separate times with its own tally reading "Prose is 0-for-4 on this", and zero checks were ever built. Eighteen entries said "archive this" and none moved. Anthropic's own guidance sets the bar at the second occurrence for exactly this reason.
 
@@ -87,7 +87,7 @@ Examples:
 - `session-end 2026-05-11: Round 3 polish + GitHub migration finalization`
 - `session-end 2026-05-07: monitoring spec finalized + lesson logged`
 
-Then push per the push policy in the global CLAUDE.md: docs/todo commits like this one can push directly ONLY if the founder already approved the session's changes — otherwise ask first. Anything touching live-site code never ships this way (PR only).
+Then push per the project's CLAUDE.md push policy; if it has none, ask.
 
 ## Anti-bloat checks (before declaring done)
 
@@ -114,4 +114,4 @@ A commit landed on the active branch that closes the work. The change is verifia
 - **Moving items that aren't actually shipped.** Verify against `git log` and the diff, not the conversation. The conversation lies; commits don't.
 - **Adding new In progress items without prompting.** End-of-session is reconciliation, not planning. New items go in via a separate request.
 - **Skipping the founder confirmation in step 3.** Always show the plan. They'll catch items you misread.
-- **Forgetting the lessons line when there was a correction.** Re-read your own back-and-forth — if the founder said "no," "stop," "don't," or "actually," there's probably a lesson.
+- **Forgetting the lessons line when there was a correction.** Re-read your own back-and-forth — if the founder said "no," "stop," "don't," or "actually," check whether it repeats an earlier mistake (Step 5); a first-time correction writes nothing.

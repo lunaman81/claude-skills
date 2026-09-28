@@ -4,7 +4,7 @@ Run this for every move the founder approves. SKILL.md section 6 tells Claude wh
 
 ## Steps
 
-1. **Snapshot.** Stash any uncommitted work. Commit the current state as a rollback point with a clear message: `restructure: pre-move snapshot for <old path> → <new path>`.
+1. **Snapshot.** In a folder other sessions share (e.g. openly), first move into your own worktree; never stash or reset the shared folder. Stash any uncommitted work. Commit the current state as a rollback point with a clear message: `restructure: pre-move snapshot for <old path> → <new path>`.
 
 2. **Verify before.** Prove the thing works at the old path. Examples:
    - If it's a script: run it (or a dry-run flag) and confirm exit code 0.
